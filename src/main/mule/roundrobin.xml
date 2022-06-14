@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4a4ac661-1ea1-49eb-a555-417d5c1b6cb2" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="roundrobinFlow" doc:id="c89e0fb8-8b00-41fc-9b28-9d25ef697410" >
+		<http:listener doc:name="Listener" doc:id="677228b3-ef98-41b9-93c8-f2dc999a0d4e" config-ref="HTTP_Listener_config" path="/roundrobin"/>
+		<round-robin doc:name="Round Robin" doc:id="a1d2b6a7-4315-49cc-9682-c37fa44fe7c1" >
+			<route >
+				<set-payload doc:name="Set Payload" doc:id="4efb9dcb-b6f6-4994-9ead-03540d732264" value='#["first route"]'/>
+				<logger level="INFO" doc:name="Logger" doc:id="0f4c3049-90a4-4897-9481-9e496a76168b" message="#[payload]"/>
+			</route>
+			<route >
+				<set-payload doc:name="Set Payload" doc:id="9d5566d9-5764-4b21-844a-4b62062a3c92" value='#["second route"]'/>
+				<logger level="INFO" doc:name="Logger" doc:id="1562b535-9cf5-4eb4-b63a-ea3bba7c0578" message="#[payload]"/>
+			</route>
+			<route >
+				<set-payload doc:name="Set Payload" doc:id="ad2ca1af-9fd7-4fb8-81a6-45c8ba113e66" value='#["third route"]'/>
+				<logger level="INFO" doc:name="Logger" doc:id="a0a46e04-801d-4465-b320-7267510beb88" message="#[payload]"/>
+			</route>
+		</round-robin>
+		<logger level="INFO" doc:name="Logger" doc:id="077937d1-9a11-486c-806a-98e47b2e8055" message="execution finished"/>
+	</flow>
+</mule>
